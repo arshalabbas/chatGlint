@@ -4,6 +4,7 @@ export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#DBDFEA",
+    justifyContent: 'space-between',
   },
   headingText: {
     color: "#54B0F3",

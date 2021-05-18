@@ -6,7 +6,11 @@ export default function ChatArea() {
   return (
     <View style={styles.inputContainer}>
       <View style={styles.section}>
-        <TextInput multiline={true} placeholder="your message..." style={styles.inputField} />
+        <TextInput
+          multiline={true}
+          placeholder="your message..."
+          style={styles.inputField}
+        />
       </View>
       <View style={styles.section}>
         <TouchableOpacity>
@@ -27,21 +31,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   inputField: {
-      width: 280,
-      height: 45,
-      backgroundColor: '#F3F6FB',
-      borderRadius: 25,
-      paddingHorizontal: 15,
-      fontSize: 17,
-      fontFamily: 'Quicksand-Medium',
-      color: '#3C3C3C',
+    width: 280,
+    height: 45,
+    backgroundColor: "#F3F6FB",
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    fontSize: 17,
+    fontFamily: "Quicksand-Medium",
+    color: "#3C3C3C",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 30,
   },
   sendButton: {
-      height: 50,
-      width: 50,
-      borderRadius: 25,
-      backgroundColor: '#77BCEE',
-      alignItems: 'center',
-      justifyContent: 'center',
-  }
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    backgroundColor: "#77BCEE",
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 30,
+  },
 });
