@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-export default function Messages() {
+export default function Messages({ name }) {
   return (
     <View>
-      <Text>All messages here</Text>
+      <Text>I'm {name}</Text>
     </View>
   );
 }

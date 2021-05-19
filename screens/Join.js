@@ -9,17 +9,37 @@ import {
   Keyboard,
 } from "react-native";
 
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://192.168.42.204:5000/",
+});
+
 export default function Join({ navigation }) {
   const [name, setName] = useState("");
   const [error, setError] = useState("...");
 
-  const pressHandler = () => {
-    navigation.push("chat");
+  const inputHandler = (value) => {
+    setName(value);
+    setError("...");
+  }
+
+  const joinChat = async () => {
+    const existingUser = (await api.get(`/users?name=${name}&room=defaultRoom`))
+      .data;
+
+      if (!name) return setError("require nickname...");
+
+    if (existingUser) {
+      setError("this name is alreay taken");
+    } else {
+      navigation.navigate("chat", { name, room: 'defaultRoom' });
+    }
   };
 
   const keyBoardDissmiss = () => {
     Keyboard.dismiss();
-  }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={keyBoardDissmiss}>
@@ -35,7 +55,7 @@ export default function Join({ navigation }) {
                 placeholder="nickname..."
                 style={styles.inputField}
                 value={name}
-                onChangeText={setName}
+                onChangeText={inputHandler}
               />
             </View>
           </View>
@@ -43,7 +63,7 @@ export default function Join({ navigation }) {
             <Text style={styles.errorText}>{error ? error : null}</Text>
           </View>
           <View style={styles.joinSection}>
-            <TouchableOpacity onPress={pressHandler}>
+            <TouchableOpacity onPress={joinChat}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>JOIN</Text>
               </View>

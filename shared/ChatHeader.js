@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,8 +8,21 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { globalStyles } from "../global/style";
+
+import socket from './socket';
+
 export default function ChatHeader({ navigation }) {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    socket.on('roomData', roomData => {
+      setUsers(roomData.users);
+      console.log(roomData);
+    });
+  }, []);
+
   const closeChat = () => {
+    socket.emit("end")
     navigation.goBack();
   };
 
@@ -21,7 +34,7 @@ export default function ChatHeader({ navigation }) {
       <View style={styles.headerSection}>
         <View style={styles.sections}>
           <FontAwesome name="circle" size={18} color="#97CDA3" />
-          <Text style={styles.statusCount}>13</Text>
+          <Text style={styles.statusCount}>{users.length}</Text>
         </View>
         <TouchableOpacity onPress={closeChat}>
           <FontAwesome name="close" size={26} color="#3C3C3C" />
