@@ -36,7 +36,7 @@ export default function ChatHeader({ navigation }) {
           <FontAwesome name="circle" size={18} color="#97CDA3" />
           <Text style={styles.statusCount}>{users.length}</Text>
         </View>
-        <TouchableOpacity onPress={closeChat}>
+        <TouchableOpacity onPress={closeChat} activeOpacity={0.7}>
           <FontAwesome name="close" size={26} color="#3C3C3C" />
         </TouchableOpacity>
       </View>

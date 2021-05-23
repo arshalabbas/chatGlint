@@ -1,38 +1,36 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
+  Text,
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import { globalStyles } from "../global/style";
 
 //components
 import ChatArea from "./components/ChatArea";
-import Message from "./components/Message";
 
-import socket from '../shared/socket';
+import socket from "../shared/socket";
 
 export default function Chat({ navigation }) {
-  const [name, setName] = useState("");
-  const [room, setRoom] = useState("");
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
   useEffect(() => {
-    
-    setName(navigation.getParam("name"));
-    setRoom(navigation.getParam("room"));
+    if (socket.disconnected) socket.connect();
+
+    const name = navigation.getParam("name");
+    const room = navigation.getParam("room");
 
     socket.emit("join", { name, room });
 
-    socket.on('message', message => {
-      console.log(message);
-    })
+    return(() => socket.disconnect());
+  }, [navigation]);
 
-    return () => {
-      socket.disconnect();
-    }
+  useEffect(() => {
+    socket.on("message", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
   }, []);
 
   const keyBoardDissmiss = () => {
@@ -42,9 +40,9 @@ export default function Chat({ navigation }) {
   return (
     <View style={globalStyles.container}>
       <TouchableWithoutFeedback onPress={keyBoardDissmiss}>
-        <View style={styles.messagesSection}>
-            <Message name={navigation.getParam("name")} />
-        </View>
+        <ScrollView>
+          {messages.map((msg, key) => <Text key={key}>{msg.user}: {msg.text}</Text>)}
+        </ScrollView>
       </TouchableWithoutFeedback>
       <View style={styles.chatSection}>
         <ChatArea />

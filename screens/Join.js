@@ -22,19 +22,22 @@ export default function Join({ navigation }) {
   const inputHandler = (value) => {
     setName(value);
     setError("...");
-  }
+  };
 
   const joinChat = async () => {
-    const existingUser = (await api.get(`/users?name=${name}&room=defaultRoom`))
-      .data;
-
-      if (!name) return setError("require nickname...");
-
-    if (existingUser) {
-      setError("this name is alreay taken");
-    } else {
-      navigation.navigate("chat", { name, room: 'defaultRoom' });
-    }
+    if (!name) return setError("require nickname...");
+    if (name.length < 4 || name.length > 12)
+      return setError("between 4 and 12 charecters only");
+    await api
+      .get(`/users?name=${name}&room=defaultRoom`)
+      .then((userData) => {
+        if (userData.data) {
+          setError("this name is alreay taken");
+        } else {
+          navigation.navigate("chat", { name, room: "defaultRoom" });
+        }
+      })
+      .catch(() => setError("Unable to connect to the server..."));
   };
 
   const keyBoardDissmiss = () => {
@@ -63,7 +66,7 @@ export default function Join({ navigation }) {
             <Text style={styles.errorText}>{error ? error : null}</Text>
           </View>
           <View style={styles.joinSection}>
-            <TouchableOpacity onPress={joinChat}>
+            <TouchableOpacity onPress={joinChat} activeOpacity={0.7}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>JOIN</Text>
               </View>

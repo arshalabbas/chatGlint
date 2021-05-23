@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+import socket from "../../shared/socket";
+
 export default function ChatArea() {
+  const [message, setMessage] = useState("");
+
+  const sendMessage = () => {
+    if (!message) return;
+    socket.emit("sendMessage", message, () => setMessage(""));
+  };
+
   return (
     <View style={styles.inputContainer}>
       <View style={styles.section}>
@@ -10,10 +19,12 @@ export default function ChatArea() {
           multiline={true}
           placeholder="your message..."
           style={styles.inputField}
+          value={message}
+          onChangeText={setMessage}
         />
       </View>
       <View style={styles.section}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={sendMessage} activeOpacity={0.7}>
           <View style={styles.sendButton}>
             <Ionicons name="send" size={20} color="#F3F6FB" />
           </View>
