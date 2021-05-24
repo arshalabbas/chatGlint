@@ -11,20 +11,22 @@ import { globalStyles } from "../global/style";
 
 //components
 import ChatArea from "./components/ChatArea";
+import Message from "./components/Message";
 
 import socket from "../shared/socket";
 
 export default function Chat({ navigation }) {
   const [messages, setMessages] = useState([]);
+
+  const name = navigation.getParam("name");
+  const room = navigation.getParam("room");
+
   useEffect(() => {
     if (socket.disconnected) socket.connect();
 
-    const name = navigation.getParam("name");
-    const room = navigation.getParam("room");
-
     socket.emit("join", { name, room });
 
-    return(() => socket.disconnect());
+    return () => socket.disconnect();
   }, [navigation]);
 
   useEffect(() => {
@@ -40,9 +42,13 @@ export default function Chat({ navigation }) {
   return (
     <View style={globalStyles.container}>
       <TouchableWithoutFeedback onPress={keyBoardDissmiss}>
-        <ScrollView>
-          {messages.map((msg, key) => <Text key={key}>{msg.user}: {msg.text}</Text>)}
-        </ScrollView>
+        <View style={styles.messagesContainer}>
+          <ScrollView>
+            <View>
+              {messages.map((msg, key) => <Message name={name} message={msg} key={key} />)}
+            </View>
+          </ScrollView>
+        </View>
       </TouchableWithoutFeedback>
       <View style={styles.chatSection}>
         <ChatArea />
@@ -52,7 +58,7 @@ export default function Chat({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  messagesSection: {
+  messagesContainer: {
     flex: 1,
   },
 });

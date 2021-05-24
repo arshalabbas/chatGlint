@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import { View, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import socket from "../../shared/socket";
@@ -9,6 +9,7 @@ export default function ChatArea() {
 
   const sendMessage = () => {
     if (!message) return;
+    if (message.length > 300) return Alert.alert("Message length limit!", "more than 300 charecters not support...");
     socket.emit("sendMessage", message, () => setMessage(""));
   };
 
@@ -36,10 +37,11 @@ export default function ChatArea() {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    height: 85,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
+    marginTop: 2,
+    marginBottom: 8,
   },
   inputField: {
     width: 280,

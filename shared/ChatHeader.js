@@ -17,14 +17,10 @@ export default function ChatHeader({ navigation }) {
   useEffect(() => {
     socket.on('roomData', roomData => {
       setUsers(roomData.users);
-      console.log(roomData);
     });
-  }, []);
+  }, [socket]);
 
-  const closeChat = () => {
-    socket.emit("end")
-    navigation.goBack();
-  };
+  const closeChat = () => navigation.goBack();
 
   return (
     <View style={styles.headerContainer}>

@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
+    "Quicksand-Regular": require("./fonts/Quicksand-Regular.ttf"),
     "Quicksand-Medium": require("./fonts/Quicksand-Medium.ttf"),
     "Quicksand-Bold": require("./fonts/Quicksand-Bold.ttf"),
   });
