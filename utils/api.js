@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { ENDPOINT } from '../global/keys.json';
+import { ENDPOINT } from './keys.json';
 
 const api = axios.create({
     baseURL: ENDPOINT,

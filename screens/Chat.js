@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
 } from "react-native";
-import { globalStyles } from "../global/style";
+import { globalStyles } from "../utils/style";
 
 //components
 import ChatArea from "./components/ChatArea";
 import Message from "./components/Message";
 
-import socket from "../shared/socket";
+import socket from "../utils/socket";
 
 export default function Chat({ navigation }) {
   const [messages, setMessages] = useState([]);
+  const [toggleAutoScroll, setToggleAutoScroll] = useState(true);
+
+  const scrollViewRef = useRef();
 
   const name = navigation.getParam("name");
   const room = navigation.getParam("room");
@@ -35,17 +37,28 @@ export default function Chat({ navigation }) {
     });
   }, []);
 
-  const keyBoardDissmiss = () => {
-    Keyboard.dismiss();
+  const keyBoardDissmiss = () => Keyboard.dismiss();
+
+  const autoScroll = () => {
+    if (!toggleAutoScroll) return;
+    scrollViewRef.current.scrollToEnd();
   };
+
+  const autoScrollOn = () => setToggleAutoScroll(true);
 
   return (
     <View style={globalStyles.container}>
       <TouchableWithoutFeedback onPress={keyBoardDissmiss}>
         <View style={styles.messagesContainer}>
-          <ScrollView>
+          <ScrollView
+            ref={scrollViewRef}
+            onContentSizeChange={autoScroll}
+            // onScrollBeginDrag={() => setToggleAutoScroll(false)}
+          >
             <View>
-              {messages.map((msg, key) => <Message name={name} message={msg} key={key} />)}
+              {messages.map((msg, key) => (
+                <Message name={name} message={msg} key={key} />
+              ))}
             </View>
           </ScrollView>
         </View>

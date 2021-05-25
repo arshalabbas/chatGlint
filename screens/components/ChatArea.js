@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import socket from "../../shared/socket";
+import socket from "../../utils/socket";
 
 export default function ChatArea() {
   const [message, setMessage] = useState("");

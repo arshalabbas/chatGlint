@@ -7,18 +7,16 @@ import {
   Dimensions,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { globalStyles } from "../global/style";
+import { globalStyles } from "../utils/style";
 
-import socket from './socket';
+import socket from "../utils/socket";
 
 export default function ChatHeader({ navigation }) {
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    socket.on('roomData', roomData => {
-      setUsers(roomData.users);
-    });
-  }, [socket]);
+  socket.on("roomData", (roomData) => {
+    setUsers(roomData.users);
+  });
 
   const closeChat = () => navigation.goBack();
 

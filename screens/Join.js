@@ -9,7 +9,7 @@ import {
   Keyboard,
 } from "react-native";
 
-import api from '../shared/api';
+import api from '../utils/api';
 
 export default function Join({ navigation }) {
   const [name, setName] = useState("");

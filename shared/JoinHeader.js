@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
-import { globalStyles } from '../global/style';
+import { globalStyles } from '../utils/style';
 
 export default function JoinHeader() {
     return (
