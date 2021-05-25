@@ -1,35 +1,54 @@
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import socket from "../../shared/socket";
 
 export default function ChatArea() {
   const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
 
   const sendMessage = () => {
-    if (!message) return;
-    if (message.length > 300) return Alert.alert("Message length limit!", "more than 300 charecters not support...");
-    socket.emit("sendMessage", message, () => setMessage(""));
+    if (sending === true) return;
+    const trimmedMsg = message.trim();
+    if (!trimmedMsg) return setMessage("");
+    if (trimmedMsg.length > 300)
+      return Alert.alert(
+        "Message length limit!",
+        "more than 300 charecters not support..."
+      );
+    setMessage("");
+    setSending(true);
+    socket.emit("sendMessage", trimmedMsg, () => setSending(false));
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <View style={styles.section}>
-        <TextInput
-          multiline={true}
-          placeholder="your message..."
-          style={styles.inputField}
-          value={message}
-          onChangeText={setMessage}
-        />
-      </View>
-      <View style={styles.section}>
-        <TouchableOpacity onPress={sendMessage} activeOpacity={0.7}>
-          <View style={styles.sendButton}>
-            <Ionicons name="send" size={20} color="#F3F6FB" />
-          </View>
-        </TouchableOpacity>
+    <View>
+      {sending ? <Text style={styles.sendingText}>sending...</Text> : null}
+      <View style={styles.inputContainer}>
+        <View style={styles.section}>
+          <TextInput
+            multiline={true}
+            placeholder="your message..."
+            style={styles.inputField}
+            value={message}
+            onChangeText={setMessage}
+          />
+        </View>
+        <View style={styles.section}>
+          <TouchableOpacity onPress={sendMessage} activeOpacity={0.7}>
+            <View style={styles.sendButton}>
+              <Ionicons name="send" size={20} color="#F3F6FB" />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -69,4 +88,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 30,
   },
+  sendingText: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'Quicksand-Bold',
+    color: '#666666',
+  }
 });

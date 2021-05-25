@@ -9,11 +9,7 @@ import {
   Keyboard,
 } from "react-native";
 
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://192.168.42.209:5000/",
-});
+import api from '../shared/api';
 
 export default function Join({ navigation }) {
   const [name, setName] = useState("");
@@ -25,8 +21,13 @@ export default function Join({ navigation }) {
   };
 
   const joinChat = async () => {
-    if (!name) return setError("require nickname...");
-    if (name.length < 4 || name.length > 12)
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      setError("require nickname...");
+      setName("");
+      return;
+    }
+    if (trimmedName.length < 4 || trimmedName.length > 12)
       return setError("between 4 and 12 charecters only");
     await api
       .get(`/users?name=${name}&room=defaultRoom`)

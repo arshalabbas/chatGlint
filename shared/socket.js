@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const ENDPOINT = 'http://192.168.42.209:5000/';
+import { ENDPOINT } from '../global/keys.json';
 
 const socket = io(ENDPOINT);
 
