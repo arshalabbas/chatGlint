@@ -93,8 +93,8 @@ const adminMessageStyle = StyleSheet.create({
 
 const userNameStyle = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   textStyle: {
     fontFamily: "Quicksand-Medium",
@@ -103,7 +103,7 @@ const userNameStyle = StyleSheet.create({
   },
   downIcon: {
     marginLeft: 3,
-    color: '#54B0F3',
+    color: "#54B0F3",
     fontSize: 16,
-  }
+  },
 });
