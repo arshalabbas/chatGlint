@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -31,7 +32,11 @@ export default function ChatArea() {
 
   return (
     <View>
-      {sending ? <Text style={styles.sendingText}>sending...</Text> : null}
+      {sending ? (
+        <View style={styles.sendingTextContainer}>
+          <Text style={styles.sendingText}>sending...</Text>
+        </View>
+      ) : null}
       <View style={styles.inputContainer}>
         <View style={styles.section}>
           <TextInput
@@ -63,7 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   inputField: {
-    width: 280,
+    width: (Dimensions.get("window").width * 80) / 100,
     height: 45,
     backgroundColor: "#F3F6FB",
     borderRadius: 25,
@@ -88,10 +93,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 30,
   },
+  sendingTextContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
   sendingText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
-    fontFamily: 'Quicksand-Bold',
-    color: '#666666',
-  }
+    fontFamily: "Quicksand-Bold",
+    color: "#666666",
+    position: 'absolute',
+    bottom: 0,
+  },
 });
